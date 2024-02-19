@@ -1,9 +1,5 @@
 import HttpError from "../helpers/HttpError.js";
 import {
-  createContactSchema,
-  updateContactSchema,
-} from "../schemas/contactsSchemas.js";
-import {
   listContacts,
   getContactById,
   removeContact,
@@ -44,10 +40,6 @@ export const deleteContact = async (req, res, next) => {
 
 export const createContact = async (req, res, next) => {
   try {
-    const { error } = createContactSchema.validate(req.body);
-    if (error) {
-      throw HttpError(400, error.message);
-    }
     const result = await addContact(req.body);
     res.status(201).send(result);
   } catch (error) {
@@ -60,10 +52,6 @@ export const updateContact = async (req, res, next) => {
     const { id } = req.params;
     if (!(await getContactById(id))) {
       throw HttpError(404, "Not Found");
-    }
-    const { error } = updateContactSchema.validate(req.body);
-    if (error) {
-      throw HttpError(400, error.message);
     }
     const update = await editContact(req.body, id);
     res.send(update);
