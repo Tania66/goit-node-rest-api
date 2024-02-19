@@ -58,23 +58,14 @@ export const createContact = async (req, res, next) => {
 export const updateContact = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const result = await getContactById(id);
-    if (!result) {
+    if (!(await getContactById(id))) {
       throw HttpError(404, "Not Found");
     }
     const { error } = updateContactSchema.validate(req.body);
     if (error) {
       throw HttpError(400, error.message);
     }
-    const { name, email, phone } = req.body;
-    const update = await editContact(
-      {
-        name: name || result.name,
-        email: email || result.email,
-        phone: phone || result.phone,
-      },
-      id
-    );
+    const update = await editContact(req.body, id);
     res.send(update);
   } catch (error) {
     next(error);

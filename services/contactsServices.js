@@ -42,7 +42,7 @@ export async function editContact(data, id) {
   if (update === -1) {
     return null;
   }
-  contacts[update] = { ...data, id };
+  contacts[update] = { ...contacts[update], ...data };
   await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
   return contacts[update];
 }
