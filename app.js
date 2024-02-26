@@ -1,10 +1,19 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
-
+import mongoose from "mongoose";
+import "dotenv/config";
 import contactsRouter from "./routes/contactsRouter.js";
-
 const app = express();
+
+const DB_KEY = process.env.DB_KEY;
+
+mongoose
+  .connect(DB_KEY)
+  .then(() => {
+    console.log("Database connection successful");
+  })
+  .catch((error) => console.log("Database connection fail", error));
 
 app.use(morgan("tiny"));
 app.use(cors());
