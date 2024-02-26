@@ -1,15 +1,14 @@
 import HttpError from "../helpers/HttpError.js";
-// import {
-//   listContacts,
-//   getContactById,
-//   removeContact,
-//   addContact,
-//   editContact,
-// } from "../services/contactsServices.js";
-import { Contact } from "../models/contact.js";
+import {
+  addContact,
+  editContact,
+  getContactById,
+  listContacts,
+  removeContact,
+} from "../services/contactsServices.js";
 
 export const getAllContacts = async (req, res) => {
-  const contacts = await Contact.find();
+  const contacts = await listContacts();
   res.send(contacts);
 };
 
@@ -51,10 +50,23 @@ export const createContact = async (req, res, next) => {
 export const updateContact = async (req, res, next) => {
   try {
     const { id } = req.params;
-    if (!(await getContactById(id))) {
+    const update = await editContact(id, req.body);
+    if (!update) {
       throw HttpError(404, "Not Found");
     }
-    const update = await editContact(req.body, id);
+    res.send(update);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateStatusContact = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const update = await editContact(id, req.body);
+    if (!update) {
+      throw HttpError(404, "Not Found");
+    }
     res.send(update);
   } catch (error) {
     next(error);

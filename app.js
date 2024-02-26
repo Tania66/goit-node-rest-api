@@ -10,10 +10,11 @@ const DB_KEY = process.env.DB_KEY;
 
 mongoose
   .connect(DB_KEY)
-  .then(() => {
-    console.log("Database connection successful");
-  })
-  .catch((error) => console.log("Database connection fail", error));
+  .then(() => console.log("Database connection successful"))
+  .catch((error) => {
+    console.log("Database connection fail", error);
+    process.exit(1);
+  });
 
 app.use(morgan("tiny"));
 app.use(cors());
