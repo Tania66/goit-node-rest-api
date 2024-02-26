@@ -1,14 +1,15 @@
 import HttpError from "../helpers/HttpError.js";
-import {
-  listContacts,
-  getContactById,
-  removeContact,
-  addContact,
-  editContact,
-} from "../services/contactsServices.js";
+// import {
+//   listContacts,
+//   getContactById,
+//   removeContact,
+//   addContact,
+//   editContact,
+// } from "../services/contactsServices.js";
+import { Contact } from "../models/contact.js";
 
 export const getAllContacts = async (req, res) => {
-  const contacts = await listContacts();
+  const contacts = await Contact.find();
   res.send(contacts);
 };
 
