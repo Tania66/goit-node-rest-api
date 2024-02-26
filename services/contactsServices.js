@@ -17,5 +17,5 @@ export async function addContact(data) {
 }
 
 export async function editContact(contactId, data) {
-  return Contact.findByIdAndUpdate(contactId, data);
+  return Contact.findByIdAndUpdate(contactId, data, { new: true });
 }
