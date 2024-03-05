@@ -1,7 +1,7 @@
 import { Contact } from "../models/contact.js";
 
-export async function listContacts() {
-  return Contact.find();
+export async function listContacts(owner) {
+  return Contact.find(owner);
 }
 
 export async function getContactById(contactId) {
