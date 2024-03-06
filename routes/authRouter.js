@@ -14,13 +14,9 @@ import {
 
 const authRouter = express.Router();
 
-authRouter.post(
-  "/users/register",
-  validateBody(registerUserJoiSchema),
-  registerUser
-);
-authRouter.post("/users/login", validateBody(loginUserJoiSchema), loginUser);
-authRouter.get("/users/current", authenticate, currentUser);
-authRouter.post("/users/logout", authenticate, logoutUser);
+authRouter.post("/register", validateBody(registerUserJoiSchema), registerUser);
+authRouter.post("/login", validateBody(loginUserJoiSchema), loginUser);
+authRouter.get("/current", authenticate, currentUser);
+authRouter.post("/logout", authenticate, logoutUser);
 
 export default authRouter;

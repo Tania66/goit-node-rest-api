@@ -9,7 +9,7 @@ import {
 
 export const getAllContacts = async (req, res) => {
   const { id: owner } = req.user;
-  const contacts = await listContacts({ owner }, { skip, limit });
+  const contacts = await listContacts({ owner });
   res.send(contacts);
 };
 
