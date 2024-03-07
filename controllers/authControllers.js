@@ -14,8 +14,14 @@ export const registerUser = async (req, res, next) => {
       throw HttpError(409, "Email in use");
     }
     const createHashPassword = await bcrypt.hash(password, 10);
-    await User.create({ email, password: createHashPassword });
-    res.status(201).send({ message: "Registration successful" });
+    const result = await User.create({ email, password: createHashPassword });
+    if (result) {
+      const { email, subscription } = result;
+      const newOwner = { user: { email, subscription } };
+      res.status(201).json(newOwner);
+    } else {
+      throw HttpError(404);
+    }
   } catch (error) {
     next(error);
   }
@@ -39,7 +45,14 @@ export const loginUser = async (req, res, next) => {
 
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "3d" });
     await User.findByIdAndUpdate(user._id, { token });
-    res.send(token);
+
+    res.json({
+      token: token,
+      user: {
+        email: user.email,
+        subscription: user.subscription,
+      },
+    });
   } catch (error) {
     next(error);
   }

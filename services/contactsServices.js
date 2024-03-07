@@ -4,18 +4,18 @@ export async function listContacts(owner) {
   return Contact.find(owner);
 }
 
-export async function getContactById(contactId) {
-  return Contact.findById(contactId);
+export async function getContactById(_id, owner) {
+  return Contact.findOne({ _id, owner });
 }
 
-export async function removeContact(contactId) {
-  return Contact.findByIdAndDelete(contactId);
+export async function removeContact(_id, owner) {
+  return Contact.findOneAndDelete({ _id, owner });
 }
 
 export async function addContact(data) {
   return Contact.create(data);
 }
 
-export async function editContact(contactId, data) {
-  return Contact.findByIdAndUpdate(contactId, data, { new: true });
+export async function editContact(_id, data, owner) {
+  return Contact.findOneAndUpdate({ _id, owner }, data, { new: true });
 }
