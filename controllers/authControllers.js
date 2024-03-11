@@ -6,6 +6,7 @@ import HttpError from "../helpers/HttpError.js";
 import gravatar from "gravatar";
 import { join } from "path";
 import Jimp from "jimp";
+import { rename } from "fs/promises";
 
 const { SECRET_KEY } = process.env;
 
@@ -88,8 +89,9 @@ export const avatarUser = async (req, res, next) => {
     const fileName = `${req.user.id}_${originalname}`;
     const result = join(avatarDir, fileName);
     const image = await Jimp.read(tempDir);
-    await image.resize(250, 250).writeAsync(result);
+    await rename(tempDir, result);
     const avatarUrl = join("avatars", fileName);
+    await image.resize(250, 250).writeAsync(result);
     await User.findByIdAndUpdate(req.user.id, { avatarUrl }, { new: true });
     res.status(200).json({ avatarUrl });
   } catch (error) {
